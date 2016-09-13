@@ -4,8 +4,10 @@ var numInARow = 4;        // the number of consecutive pieces to declare a winne
 var test = false;         // helps check for a winner
 var i = 0;                // incrementer in various for loops
 var q = false;            // indicates whose turn it is
-var checkForWinner = function   // function inside of App that is called after each piece is played and checks for a winner
-var
+var numOfRows = 6;        // make the number of rows mutable
+var numOfColumns = 7;     // make the number of columns mutable
+var numToWin = 4;         // make the win condition mutable
+
 
 
 EW winner = {x = -1, y = 0}

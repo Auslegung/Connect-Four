@@ -49,7 +49,8 @@ HTML, CSS, and JavaScript/jQuery.  Its specified behavior is as follows:
 
 `App` handles the logic of the game:
 (a) maintaining a 'state' (i.e. whose turn it is),
-(b)
+(b) checking for a winner after each piece is played,
+(c)
 
 `Display` is responsible for showing the data managed by `App` in the browser by
 changing the text on the screen, displaying whose turn it is, and indicating a
@@ -63,4 +64,4 @@ winner.
 (c) showing a popup confirming the desire to reset the game
 
 
-`EventHandlers`
+`EventHandlers` is responsible for the event handlers

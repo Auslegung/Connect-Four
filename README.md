@@ -44,7 +44,7 @@ HTML, CSS, and JavaScript/jQuery.  Its specified behavior is as follows:
 `App` handles the logic of the game:
 (a) maintaining a 'state' (i.e. whose turn it is),
 (b) checking for a winner after each piece is played,
-(c)
+(c) maintaining the 2d array corresponding to the game board
 
 `Display` is responsible for showing the data managed by `App` in the browser by
 changing the text on the screen, displaying whose turn it is, and displaying a

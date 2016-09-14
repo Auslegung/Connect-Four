@@ -1,7 +1,7 @@
 `App` handles the logic of the game:
 (a) maintaining a 'state' (i.e. whose turn it is),
 (b) checking for a winner after each piece is played,
-(c)
+(c) maintaining the 2d array corresponding to the game board
 
 # Unit Spec : `App`
 

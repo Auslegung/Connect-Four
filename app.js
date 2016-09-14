@@ -3,7 +3,8 @@ VARIABLES
 var numInARow = 4;        // the number of consecutive pieces to declare a winner
 var test = false;         // helps check for a winner
 var i = 0;                // incrementer in various for loops
-var q = false;            // indicates whose turn it is
+var q;                    // indicates whose turn it is. Undefined = no game,
+                          // true = player1, false = player2
 var numOfRows = 6;        // make the number of rows mutable
 var numOfColumns = 7;     // make the number of columns mutable
 var numToWin = 4;         // make the win condition mutable

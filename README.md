@@ -8,10 +8,6 @@ HTML, CSS, and JavaScript/jQuery.  Its specified behavior is as follows:
 1.  When the 'START' button is clicked,
       a.  and there is not an active game,
         i.    the game begins,
-        ii.   the game board brightens,
-        iii.  text appears indicating whose turn it is,
-        iv.   the start button dims
-        v.    the appropriate-colored game piece appears above the middle column.
       b.  and there is an active game,
         i.    nothing happens.
 2.  When the mouse hovers over a column of the game board,
@@ -41,9 +37,7 @@ HTML, CSS, and JavaScript/jQuery.  Its specified behavior is as follows:
       b.  and there is an active game,
         ii.   a popup box asks the player if they really want to reset the game,
           a.    and they do,
-            i.    remove all pieces from the board,
-            ii.   text appears indicating whose turn it is,
-            iii.  appropriate-colored game piece appears above the middle column.
+            i.    the game is reset.
           b.    and they do not,
             i.    nothing happens.
 
@@ -53,7 +47,7 @@ HTML, CSS, and JavaScript/jQuery.  Its specified behavior is as follows:
 (c)
 
 `Display` is responsible for showing the data managed by `App` in the browser by
-changing the text on the screen, displaying whose turn it is, and indicating a
+changing the text on the screen, displaying whose turn it is, and displaying a
 winner.
 
 `UI` is responsible for all of the things that the user can interact with, such as

@@ -18,7 +18,7 @@
       </header>
 
       <div class="announcement">
-        <p>PlayerQ's Turn</p> <!-- Displays whose turn it is -->
+        <p id="turn">Shall we play a game?</p> <!-- Displays whose turn it is -->
       </div>
 
       <div class="sidebar"> <!-- Left sidebar, displaying leaderboard and pieces -->
@@ -26,21 +26,21 @@
       </div>
 
       <div class="game-board">
-        <img src="board.png" alt="" usemap="#Map" />
+        <img id="board" src="board.png" alt="" usemap="#Map" />
         <map name="Map" id="Map">
-            <area id="column6" name="6" shape="poly" coords="1034,114,883,114,883,1043,1034,1043" />
-            <area id="column5" name="5" shape="poly" coords="882,114,736,114,736,1043,882,1043" />
-            <area id="column4" name="4" shape="poly" coords="735,114,596,114,596,1043,735,1043" />
-            <area id="column3" name="3" shape="poly" coords="595,114,449,114,449,1043,595,1043" />
-            <area id="column2" name="2" shape="poly" coords="448,114,301,114,301,1043,448,1043" />
-            <area id="column1" name="1" shape="poly" coords="300,114,155,114,155,1043,300,1043" />
-            <area id="column0" name="0" shape="poly" coords="153,114,6,113,5,1046,152,1046" />
+            <area id="column6" name="6" shape="poly" coords="1034,0,883,0,883,1043,1034,1043" />
+            <area id="column5" name="5" shape="poly" coords="882,0,736,0,736,1043,882,1043" />
+            <area id="column4" name="4" shape="poly" coords="735,0,596,0,596,1043,735,1043" />
+            <area id="column3" name="3" shape="poly" coords="595,0,449,0,449,1043,595,1043" />
+            <area id="column2" name="2" shape="poly" coords="448,0,301,0,301,1043,448,1043" />
+            <area id="column1" name="1" shape="poly" coords="300,0,155,0,155,1043,300,1043" />
+            <area id="column0" name="0" shape="poly" coords="153,0,6,0,5,1046,152,1046" />
         </map>
 
       </div>
 
       <div class="sidebar2"> <!-- Right sidebar, displaying buttons -->
-        <button type="submit" name="start">START</button>
+        <button id="start" type="submit" name="start">START</button>
       </div>
 
     </div>

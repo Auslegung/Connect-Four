@@ -7,8 +7,8 @@ $(function() {
     numOfColumns: 7, // number of columns in the game board
     numToWin: 4,     // number of pieces needed to connect to win
     maxOpacity: 1,   // maximum opacity of game board and start button
-    minOpacity: 0.5, // minimum opacity of game board and start button
-    b0ardArray: [ [0, 0, 0, 0, 0, 0, 0],
+    minOpacity: 0.4, // minimum opacity of game board and start button
+    boardArray: [ [0, 0, 0, 0, 0, 0, 0],
                   [0, 0, 0, 0, 0, 0, 0],
                   [0, 0, 0, 0, 0, 0, 0],
                   [0, 0, 0, 0, 0, 0, 0],
@@ -16,7 +16,7 @@ $(function() {
                   [0, 0, 0, 0, 0, 0, 0] ],
 
     // determines whose turn it is by changing q
-    whoseTurn: function() {
+    changeTurn: function() {
       if (App.q === 0) {
         App.q = 1;
       } // end if
@@ -24,7 +24,7 @@ $(function() {
         App.q = -App.q;
       } // end else
       return App.q;
-    }, // end whoseTurn
+    }, // end changeTurn
 
     // takes two arguments, a (0 to 5) and b (0 to 6), where a is the row (dataid) and b is the column (columnNum) of the recently placed piece, corresponding to the main array as well
     checkForWinner: function(a, b) {
@@ -63,7 +63,15 @@ $(function() {
   var Display = {
 
     displayTurn: function() {
-
+      if (App.q === 1) {
+        $('#turn').text('Player 1\'s Turn')
+      } // end if
+      else if (App.q === -1) {
+        $('#turn').text('Player 2\'s Turn')
+      } // end else if
+      else {
+        $('#turn').text('Shall we play a game?')
+      } // end else
     }, // end displayTurn
 
     displayWinner: function() {
@@ -81,12 +89,15 @@ $(function() {
   // (c) showing a popup confirming the desire to reset the game
   var UI = {
       // modifies the argument's opacity from 0.5 to 1 or from 1 to 0.5
-    changeOpacity: function(buttonOrBoard) {
-      if ( $(this).css('opacity').val() < App.maxOpacity ) {
-        $(this).css('opacity').val() = App.maxOpacity;
+    changeOpacity: function(boardOrButton) {
+
+      // var boardOrButton = this.boardOrButton;
+      console.log('boardOrButton: ', boardOrButton.css('opacity'));
+      if ( boardOrButton.css('opacity') < App.maxOpacity ) {
+        boardOrButton.fadeTo( 800, App.maxOpacity );
       } // end if
       else {
-        $(this).css('opcaity').val() = App.minOpacity;
+        boardOrButton.fadeTo( 800, App.minOpacity );
       } // end else
     }, // end changeOpacity
 
@@ -108,11 +119,15 @@ $(function() {
   var EventHandlers = {
     // board's alpha goes from .5 to 1, and text is displayed with the flash rule from https://daneden.github.io/animate.css/, displaying playerQ's turn, where q === false, then each time a piece is played q = !q;
     onClickStart: function() {
-      event.preventDefault();
+      if (App.q === 0) {
+        App.changeTurn();
+        Display.displayTurn();
+        UI.changeOpacity($('#board'));
+      }
     }, // end onClickStart
 
     onClickReset: function() {
-
+      App.q = 0;
     }, // end onClickReset
 
     onClickColumn: function() {
@@ -132,6 +147,7 @@ $(function() {
   $('#column2').click(EventHandlers.onClickColumn);
   $('#column1').click(EventHandlers.onClickColumn);
   $('#column0').click(EventHandlers.onClickColumn);
+  $('#start').click(EventHandlers.onClickStart);
 
   $('#column5').hover(
     function() {

@@ -4,28 +4,34 @@ body {
 
 .sidebar2 {
   grid-area: sidebar2;
+  border: 1px solid black;
 }
   .game-board {
     grid-area: game-board;
+    border: 1px solid black;
   }
   .sidebar {
     grid-area: sidebar;
+    border: 1px solid black;
   }
   .announcement {
     grid-area: announcement;
     font-size: 40px;
+    border: 1px solid black;
+    text-align: center;
   }
   .header {
     grid-area: header;
+    border: 1px solid black;
   }
 
 .wrapper {
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: 120px 120px 275px 275px 275px 120px 120px
-  grid-template-rows: 120px 60px 275px 275px 275px 40px 40px
+  grid-template-columns: 120px 120px 275px 275px 275px 120px 120px;
+  grid-template-rows: 120px 60px 275px 275px 275px 40px 40px;
   grid-template-areas:
-    "sidebar sidebar ...... announcement ...... sidebar2 sidebar2"
+    "sidebar sidebar announcement announcement announcement sidebar2 sidebar2"
     "sidebar sidebar ...... ...... ...... sidebar2 sidebar2"
     "sidebar sidebar game-board game-board game-board sidebar2 sidebar2"
     "sidebar sidebar game-board game-board game-board sidebar2 sidebar2"
@@ -37,15 +43,20 @@ body {
     "sidebar"
     "game-board"
     "sidebar2";*/
-    background-color: #444;
 }
 
 .sidebar {
   display: grid;
 }
 
-.game-board {
+button {
+  margin: 55px auto auto auto;
+  display: block;
+}
+
+#board {
   display: grid;
+  opacity: 0.4;
 }
 
 img {

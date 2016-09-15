@@ -57,13 +57,23 @@ button {
 #board {
   display: grid;
   opacity: 0.4;
+  height: auto;
+  width: auto;
+  /*max-width: 85%;
+  max-height: 85%;*/
+  min-width: 50%;
+  min-height: 50%;
 }
 
-img {
+#pieces {
+  display: none;
+}
+
+/*img {
   height: auto;
   width: auto;
   /*max-width: 85%;
   max-height: 85%;
   min-width: 50%;
   min-height: 50%;*/
-}
+}*/

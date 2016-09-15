@@ -36,7 +36,7 @@ $(function() {
       // NE-SW winner = {x = -1, y = -1}
       // NS winner = {x = 0, y = 1}
       for (var i = 2; i < App.numInARow; i++) {
-        if (arr[a+(y*i)][b] === playerQ) {
+        if (App.boardArray[a+(y*i)][b] === playerQ) {
           test = true;
         } // end if
         else {
@@ -102,11 +102,13 @@ $(function() {
     }, // end changeOpacity
 
     displayGamePiece: function() {
-
+      $('#pieces').toggle();
+      $('').append($('#pieces'));
     }, // end displayGamePiece
 
     moveGamePiece: function() {
-
+      $('#pieces').toggle();
+      $(this).prepend($('#pieces'));
     }, // end moveGamePiece
 
     confirmResetGame: function() {
@@ -140,6 +142,7 @@ $(function() {
     // }; // end onClickPiece
 
   }; // end EventHandlers
+  $('#start').click(EventHandlers.onClickStart);
   $('#column6').click(EventHandlers.onClickColumn);
   $('#column5').click(EventHandlers.onClickColumn);
   $('#column4').click(EventHandlers.onClickColumn);
@@ -147,10 +150,11 @@ $(function() {
   $('#column2').click(EventHandlers.onClickColumn);
   $('#column1').click(EventHandlers.onClickColumn);
   $('#column0').click(EventHandlers.onClickColumn);
-  $('#start').click(EventHandlers.onClickStart);
-
-  $('#column5').hover(
-    function() {
-      console.log('hovered');
-    });
+  $('#column6').hover(UI.moveGamePiece);
+  $('#column5').hover(UI.moveGamePiece);
+  $('#column4').hover(UI.moveGamePiece);
+  $('#column3').hover(UI.moveGamePiece);
+  $('#column2').hover(UI.moveGamePiece);
+  $('#column1').hover(UI.moveGamePiece);
+  $('#column0').hover(UI.moveGamePiece);
 }); // end document.ready

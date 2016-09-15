@@ -59,10 +59,8 @@ button {
   opacity: 0.4;
   height: auto;
   width: auto;
-  /*max-width: 85%;
-  max-height: 85%;*/
-  min-width: 50%;
-  min-height: 50%;
+  max-width: 85%;
+  max-height: 85%;
 }
 
 #pieces {

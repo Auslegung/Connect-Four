@@ -50,6 +50,18 @@ $(function() {
       } // end for
     }, // end checkForWinner
 
+    // takes a column and increments its data-row value
+    incrementDataRow: function(column) {
+      var newRow = Number($(column).attr('data-row')) + 1;
+      column.attr('data-row', newRow);
+    }, // end incrementDataRow
+
+    // takes an object, find data-column and data-row and modifies App.boardArray to reflect
+    // where the game piece was placed
+    modifyArray: function() {
+
+    }, // end modifyArray
+
     // // starts the game by setting var q to 1.
     // startGame: function() {
     //   App.q = 1;
@@ -133,7 +145,7 @@ $(function() {
     }, // end onClickReset
 
     onClickColumn: function() {
-      console.log('clicked', $(this));
+      App.incrementDataRow($(this));
     }, // end onClickColumn
 
     // Optional

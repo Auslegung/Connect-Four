@@ -1,3 +1,10 @@
+// you were working on fixing the EW winner declaration.  Seems it's calling it
+// at 5 instead of 4.  You also just switched back, yet again, to building the
+// boardArray when clicking the start button, so make sure that's working,
+// specifically that it's the correct size and not 1 to large in each dimension
+
+
+
 $(function() {
 
   var App = {
@@ -8,14 +15,14 @@ $(function() {
     numToWin: 4,     // number of pieces needed to connect to win
     maxOpacity: 1,   // maximum opacity of game board and start button
     minOpacity: 0.4, // minimum opacity of game board and start button
-    // boardArray: [],
+    boardArray: [],
                     // 0  1  2  3  4  5  6
-    boardArray: [  [0, 0, 0, 0, 0, 0, 0], //5
-                   [0, 0, 0, 0, 0, 0, 0], //4
-                   [0, 0, 0, 0, 0, 0, 0], //3
-                   [0, 0, 0, 0, 0, 0, 0], //2
-                   [0, 0, 0, 0, 0, 0, 0], //1
-                   [0, 0, 0, 0, 0, 0, 0]], //0
+    // boardArray: [  [0, 0, 0, 0, 0, 0, 0], //5
+    //                [0, 0, 0, 0, 0, 0, 0], //4
+    //                [0, 0, 0, 0, 0, 0, 0], //3
+    //                [0, 0, 0, 0, 0, 0, 0], //2
+    //                [0, 0, 0, 0, 0, 0, 0], //1
+    //                [0, 0, 0, 0, 0, 0, 0]], //0
 
     // determines whose turn it is by changing q
     changeTurn: function() {
@@ -44,7 +51,7 @@ $(function() {
         for (var i = 0; i < App.numToWin; i++) {
           var x = a+i;
           // console.log('i is: ', i, ' winner value is: ', winner, ' a is: ', a);                             // DEBUGGING
-          console.log('array value at boardArray', x+','+b, 'is:', App.boardArray[a + i][b]);
+          // console.log('array value at boardArray', x+','+b, 'is:', App.boardArray[a + i][b]);      // DEBUGGING
           if (App.boardArray[a + i][b] === App.q) {
             winner++;
           } // end if
@@ -61,7 +68,8 @@ $(function() {
       winner = 0;
       // check for EW winner
       for (var i = 1; i < App.numOfColumns; i++) {
-        if (App.boardArray[a][i-1] === App.boardArray[a][i]) {
+        console.log('winner value is', winner);
+        if (App.boardArray[a][i-1] === App.boardArray[a][i] && App.boardArray[a][i-1] !== 0) {
           winner++;
           if (winner === App.numToWin) {
             Display.displayWinner();
@@ -85,7 +93,7 @@ $(function() {
       var arrRow = Number($(column).attr('data-row'));
       var arrColumn = Number($(column).attr('data-column'))
       App.boardArray[arrRow][arrColumn] = App.q;
-      console.log(App.boardArray);
+      // console.log(App.boardArray);         // DEBUGGING
     }, // end modifyArray
 
     // resets game by setting data-row to 6 for all columns in the game board,
@@ -181,7 +189,7 @@ $(function() {
         App.changeTurn();
         Display.displayTurn();
         UI.changeOpacity($('#board'));
-        // App.createBoardArray();
+        App.createBoardArray();
       }
     }, // end onClickStart
 

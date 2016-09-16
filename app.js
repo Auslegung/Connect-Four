@@ -9,7 +9,7 @@ $(function() {
 
   var App = {
 
-    q: 0,            // 0 = no game, 1 = player1, -1 = player2
+    activeTurn: 0,            // 0 = no game, 1 = player1, -1 = player2
     numOfRows: 6,    // number of rows in the game board
     numOfColumns: 7, // number of columns in the game board
     numToWin: 4,     // number of pieces needed to connect to win
@@ -24,15 +24,15 @@ $(function() {
                    [0, 0, 0, 0, 0, 0, 0], //1
                    [0, 0, 0, 0, 0, 0, 0]], //0
 
-    // determines whose turn it is by changing q
+    // determines whose turn it is by changing activeTurn
     changeTurn: function() {
-      if (App.q === 0) {
-        App.q = 1;
+      if (App.activeTurn === 0) {
+        App.activeTurn = 1;
       } // end if
       else {
-        App.q = -App.q;
-
+        App.activeTurn = -App.activeTurn;
       } // end else
+      Display.displayTurn();
     }, // end changeTurn
 
     // looks for 4 consecutive game pieces and if found, declares a winner
@@ -52,11 +52,11 @@ $(function() {
           var x = a+i;
           // console.log('i is: ', i, ' winner value is: ', winner, ' a is: ', a);                             // DEBUGGING
           // console.log('array value at boardArray', x+','+b, 'is:', App.boardArray[a + i][b]);      // DEBUGGING
-          if (App.boardArray[a + i][b] === App.q) {
+          if (App.boardArray[a + i][b] === App.activeTurn) {
             winner++;
           } // end if
           else {
-            console.log('else is getting called');            // DEBUGGING
+            // console.log('else is getting called');            // DEBUGGING
             winner = 0;
           } // end else
           if (winner === App.numToWin) {
@@ -64,22 +64,19 @@ $(function() {
           } // end if
         } // end for
       } // end if
-      
+
       // check for EW winner
       winner = 0;
       // console.log('array value inside checkForWinner',App.boardArray);
       for (var j = 0; j < App.numOfColumns - App.numToWin; j++) {
-        if (Math.abs(winner) === App.numToWin) {
-          Display.displayWinner();
-        }
-        else {
-          winner = 0;
-          for (var k = 0; k < App.numToWin; k++) {
-            winner += App.boardArray[a][k + j];
-          } // end for
-        } // end else
+        winner = 0;
+        for (var k = 0; k < App.numToWin; k++) {
+          winner += App.boardArray[a][k + j];
+          if (Math.abs(winner) === App.numToWin) {
+            Display.displayWinner();
+          }
+        } // end for
       } // end for
-
       // for (var j = 1; j < App.numOfColumns; j++) {
       //   // console.log('a, j-1:', App.boardArray[a][j-1], 'a, j:',App.boardArray[a][j]);
       //   if (App.boardArray[a][j-1] === App.boardArray[a][j] && App.boardArray[a][j-1] !== 0) {
@@ -111,20 +108,20 @@ $(function() {
       // console.log('original array value:', App.boardArray);
       var arrRow = Number($(column).attr('data-row'));
       var arrColumn = Number($(column).attr('data-column'))
-      App.boardArray[arrRow][arrColumn] = App.q;
+      App.boardArray[arrRow][arrColumn] = App.activeTurn;
       // console.log('modified array value:', App.boardArray);
       // console.log(App.boardArray);         // DEBUGGING
     }, // end modifyArray
 
     // resets game by setting data-row to 6 for all columns in the game board,
-    // setting App.q to 0, dimming the board, and resetting App.boardArray
+    // setting App.activeTurn to 0, dimming the board, and resetting App.boardArray
     resetGame: function() {
       for (var i = 0; i < App.numOfColumns; i++) {
         columnId = 'column' + i.toString();
         $('#'+columnId).attr('data-row', '6');
       } // end for
-      App.q = 0;
-      UI.changeOpacity($('#board'));
+      App.activeTurn = 0;
+      // UI.changeOpacity($('#board'));
       // App.boardArray(App.numOfColumns).fill(0);
       // for (var i = 0; i < App.numOfColumns; i++) {
       //   App.boardArray[i](App.numOfRows).fill(0);
@@ -137,15 +134,16 @@ $(function() {
                      [0, 0, 0, 0, 0, 0, 0], //2
                      [0, 0, 0, 0, 0, 0, 0], //1
                      [0, 0, 0, 0, 0, 0, 0]] //0
+      App.changeTurn();
     }, // end resetGame
 
     createBoardArray: function() { // DEREK
       App.boardArray = Array(App.numOfRows).fill(Array(App.numOfColumns).fill(0));
     },
 
-    // // starts the game by setting var q to 1.
+    // // starts the game by setting var activeTurn to 1.
     // startGame: function() {
-    //   App.q = 1;
+    //   App.activeTurn = 1;
     // }, // end startGame
   }; // end App
 
@@ -156,10 +154,10 @@ $(function() {
   var Display = {
 
     displayTurn: function() {
-      if (App.q === 1) {
+      if (App.activeTurn === 1) {
         $('#turn').text('Player 1\'s Turn')
       } // end if
-      else if (App.q === -1) {
+      else if (App.activeTurn === -1) {
         $('#turn').text('Player 2\'s Turn')
       } // end else if
       else {
@@ -168,8 +166,10 @@ $(function() {
     }, // end displayTurn
 
     displayWinner: function() {
-      console.log('Player ', App.q, ' is the winner!');
-      $('#announcement').text('Player '+App.q+' is the winner!')
+      $('#turn').text('Player '+App.activeTurn+' is the winner!');
+      console.log('Player ', App.activeTurn, ' is the winner!');
+      App.activeTurn = 0;
+      // console.log('inside displayWinner, activeTurn is:',App.activeTurn);
     }, // end displayWinner
 
   }; // end Display
@@ -210,29 +210,33 @@ $(function() {
 
 
   var EventHandlers = {
-    // board's alpha goes from .5 to 1, and text is displayed with the flash rule from https://daneden.github.io/animate.css/, displaying playerQ's turn, where q === false, then each time a piece is played q = !q;
+    // board's alpha goes from .5 to 1, and text is displayed with the flash rule from https://daneden.github.io/animate.css/, displaying playerQ's turn, where activeTurn === false, then each time a piece is played activeTurn = !activeTurn;
     onClickStart: function() {
-      if (App.q === 0) {
+      if (App.activeTurn === 0) {
         App.changeTurn();
-        Display.displayTurn();
         UI.changeOpacity($('#board'));
         // App.createBoardArray();
-      }
+      } // end if
       // console.log('array value after creating:', App.boardArray);
     }, // end onClickStart
 
     onClickReset: function() {
-      if (App.q !== 0) {
+      if (App.activeTurn !== 0) {
         UI.confirmResetGame();
-      }
+      } // end if
     }, // end onClickReset
 
     onClickColumn: function() {
+      // console.log('inside column click, activeTurn is:', App.activeTurn);
       // console.log('array value after clicking column:', App.boardArray);
-      App.decrementDataRow($(this));
-      App.modifyArray($(this));
-      App.checkForWinner($(this));
-      App.changeTurn();
+      if (App.activeTurn !== 0) {
+        App.decrementDataRow($(this));
+        App.modifyArray($(this));
+        App.checkForWinner($(this));
+      } // end if
+      if (App.activeTurn !== 0) {
+        App.changeTurn();
+      } // end if
     }, // end onClickColumn
 
     // Optional

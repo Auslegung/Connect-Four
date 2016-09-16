@@ -8,7 +8,14 @@ $(function() {
     numToWin: 4,     // number of pieces needed to connect to win
     maxOpacity: 1,   // maximum opacity of game board and start button
     minOpacity: 0.4, // minimum opacity of game board and start button
-    boardArray: [],
+    // boardArray: [],
+                    // 0  1  2  3  4  5  6
+    boardArray: [  [0, 0, 0, 0, 0, 0, 0], //5
+                   [0, 0, 0, 0, 0, 0, 0], //4
+                   [0, 0, 0, 0, 0, 0, 0], //3
+                   [0, 0, 0, 0, 0, 0, 0], //2
+                   [0, 0, 0, 0, 0, 0, 0], //1
+                   [0, 0, 0, 0, 0, 0, 0]], //0
 
     // determines whose turn it is by changing q
     changeTurn: function() {
@@ -17,68 +24,87 @@ $(function() {
       } // end if
       else {
         App.q = -App.q;
+
       } // end else
-      return App.q;
     }, // end changeTurn
 
-    // takes two arguments, a (0 to 5) and b (0 to 6), where a is the row (dataid) and b is the column (columnNum) of the recently placed piece, corresponding to the main array as well
-    checkForWinner: function(a, b) {
-      // 1, 3 for example.
-      var test = false;
-
+    // looks for 4 consecutive game pieces and if found, declares a winner
+    checkForWinner: function(column) {
+      var winner = 0;
+      var a = Number($(column).attr('data-row'));
+      var b = Number($(column).attr('data-column'));
       // EW winner = {x = -1, y = 0}
       // NW-SE winner = {x = 1, y = -1}
       // NE-SW winner = {x = -1, y = -1}
       // NS winner = {x = 0, y = 1}
-      for (var i = 2; i < App.numInARow; i++) {
-        if (App.boardArray[a+(y*i)][b] === playerQ) {
-          test = true;
+                                                  // I don't think you're referring to the correct spot in the array.  a, y, and i are mixing together incorrectly
+      // check for NS winner
+      // var y = -1;
+      if (a < 3) {
+        for (var i = 0; i < App.numToWin; i++) {
+          var x = a+i;
+          // console.log('i is: ', i, ' winner value is: ', winner, ' a is: ', a);                             // DEBUGGING
+          console.log('array value at boardArray', x+','+b, 'is:', App.boardArray[a + i][b]);
+          if (App.boardArray[a + i][b] === App.q) {
+            winner++;
+          } // end if
+          else {
+            console.log('else is getting called');            // DEBUGGING
+            winner = 0;
+          } // end else
+          if (winner === App.numToWin) {
+            Display.displayWinner();
+          } // end if
+        } // end for
+      } // end if
+
+      winner = 0;
+      // check for EW winner
+      for (var i = 1; i < App.numOfColumns; i++) {
+        if (App.boardArray[a][i-1] === App.boardArray[a][i]) {
+          winner++;
+          if (winner === App.numToWin) {
+            Display.displayWinner();
+          } // end if
         } // end if
         else {
-          test = false;
+          winner = 0;
         } // end else
-      } // end for
-
-      // EW Winner
-      for (var i = 2; i < App.numInARow; i++) {
-
       } // end for
     }, // end checkForWinner
 
-    // takes a column and increments its data-row value
-    incrementDataRow: function(column) {
-      console.log('original value: ', $(column).attr('data-row'));
-      var newRow = Number($(column).attr('data-row')) + 1;
+    // takes a column and decrements its data-row value
+    decrementDataRow: function(column) {
+      var newRow = Number($(column).attr('data-row')) - 1;
       column.attr('data-row', newRow);
-      console.log('updated value: ', $(column).attr('data-row'));
-
-    }, // end incrementDataRow
+    }, // end decrementDataRow
 
     // takes a column, and uses data-column and data-row to modify
     // App.boardArray to reflect where the game piece was placed
     modifyArray: function(column) {
       var arrRow = Number($(column).attr('data-row'));
       var arrColumn = Number($(column).attr('data-column'))
-      App.boardArray[App.numOfRows - arrRow][arrColumn] = App.q;
+      App.boardArray[arrRow][arrColumn] = App.q;
+      console.log(App.boardArray);
     }, // end modifyArray
 
-    // resets game by setting data-row to 0 for all columns in the game board,
+    // resets game by setting data-row to 6 for all columns in the game board,
     // setting App.q to 0, dimming the board, and resetting App.boardArray
     resetGame: function() {
       for (var i = 0; i < App.numOfColumns; i++) {
         columnId = 'column' + i.toString();
-        $('#'+columnId).attr('data-row', '0');
+        $('#'+columnId).attr('data-row', '6');
       } // end for
       App.q = 0;
       UI.changeOpacity($('#board'));
-      App.boardArray(App.numOfColumns).fill(0);
-      for (var i = 0; i < App.numOfColumns; i++) {
-        App.boardArray[i](App.numOfRows).fill(0);
-      } // end for
+      // App.boardArray(App.numOfColumns).fill(0);
+      // for (var i = 0; i < App.numOfColumns; i++) {
+      //   App.boardArray[i](App.numOfRows).fill(0);
+      // } // end for
       App.createBoardArray();
     }, // end resetGame
 
-    createBoardArray: function() {
+    createBoardArray: function() { // DEREK
       App.boardArray = Array(App.numOfRows).fill(Array(App.numOfColumns).fill(0));
     },
 
@@ -107,7 +133,8 @@ $(function() {
     }, // end displayTurn
 
     displayWinner: function() {
-
+      console.log('Player ', App.q, ' is the winner!');
+      $('#announcement').text('Player '+App.q+' is the winner!')
     }, // end displayWinner
 
   }; // end Display
@@ -154,18 +181,21 @@ $(function() {
         App.changeTurn();
         Display.displayTurn();
         UI.changeOpacity($('#board'));
-        App.createBoardArray();
+        // App.createBoardArray();
       }
     }, // end onClickStart
 
     onClickReset: function() {
-      UI.confirmResetGame();
+      if (App.q !== 0) {
+        UI.confirmResetGame();
+      }
     }, // end onClickReset
 
     onClickColumn: function() {
-      App.incrementDataRow($(this));
+      App.decrementDataRow($(this));
       App.modifyArray($(this));
-      App.checkForWinner();
+      App.checkForWinner($(this));
+      App.changeTurn();
     }, // end onClickColumn
 
     // Optional

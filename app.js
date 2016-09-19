@@ -198,8 +198,16 @@ $(function() {
     }, // end displayGamePiece
 
     moveGamePiece: function() {
-      $('#pieces').toggle();
-      $(this).prepend($('#pieces'));
+      if (App.activeTurn === 1) {
+        $('#player-one-piece').toggle();
+        var $gamePiece = $('#player-one-piece');
+        $(this).prepend($gamePiece);
+      }
+      else if (App.activeTurn === -1) {
+        $('#player-two-piece').toggle();
+        var $gamePiece = $('#player-two-piece');
+        $(this).prepend($gamePiece);
+      }
     }, // end moveGamePiece
 
     confirmResetGame: function() {
